@@ -1,0 +1,56 @@
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+header,
+footer {
+  background-color: #3f3f3f;
+  padding: 20px 0;
+  text-align: center;
+  color: white;
+}
+
+main {
+  display: flex;
+  flex: 1;
+}
+
+.main-center {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 20px;
+}
+
+aside {
+  width: 200px;
+  padding: 20px;
+}
+
+.left-sidebar {
+  background-color: lightpink;
+}
+
+.right-sidebar {
+  background-color: lightblue;
+}
+
+@media only screen and (max-width: 480px) {
+  main {
+    flex-direction: column;
+  }
+
+  aside {
+    width: 100%;
+  }
+}
