@@ -49,7 +49,7 @@ tabConfig.forEach((tab) => {
 });
 
 tabContainer.addEventListener("click", function (event) {
-  if (event.target.className === "tab-button") {
+  if (event.target.classList.contains("tab-button")) {
     selectedTabId = event.target.getAttribute("data-tab-id");
     activeTab(selectedTabId);
   }
