@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+body {
+  padding: 20px;
+}
+
+.accordion-item {
+  border: 1px solid bisque;
+  margin-top: 10px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.accordion-head {
+  padding: 20px;
+  background-color: bisque;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.accordion-content {
+  padding: 20px;
+}
