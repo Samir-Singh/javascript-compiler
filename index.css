@@ -10,30 +10,28 @@ body {
   padding: 20px;
 }
 
-.tab-head {
-  display: flex;
-  gap: 10px;
+h1 {
+  text-align: center;
 }
 
-.tab-button,
-.active-button {
-  padding: 5px 10px;
-  border: none;
+.accordion-item {
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 10px;
+  border: 1px solid bisque;
+}
+
+.accordion-button {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: bisque;
+  outline: none;
+  border: 1px solid bisque;
   cursor: pointer;
+  text-align: start;
+  font-size: 18px;
 }
 
-.tab-button:hover {
-  background-color: beige;
-}
-
-.tab-content {
-  display: none;
-}
-
-.active-tab {
-  display: block;
-}
-
-.active-button {
-  background-color: beige;
+.accordion-content {
+  padding: 20px;
 }

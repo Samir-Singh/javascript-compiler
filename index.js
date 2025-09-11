@@ -1,78 +1,69 @@
-const tabConfig = [
+const accordionConfig = [
   {
     id: 1,
-    title: "Tab 1",
-    content: `
-        <h1>Tab Content One Heading</h1>
-        <p>Tab Content One Paragraph</p>
-    `,
+    title: "Accordion One",
+    content: `<h2>I am accordion one heading</h2> <p>I am accordion one para</p>`,
   },
 
   {
     id: 2,
-    title: "Tab 2",
-    content: `
-        <h1>Tab Content Two Heading</h1>
-        <p>Tab Content Two Paragraph</p>
-    `,
+    title: "Accordion Two",
+    content: `<h2>I am accordion two heading</h2> <p>I am accordion two para</p>`,
   },
 
   {
     id: 3,
-    title: "Tab 3",
-    content: `
-        <h1>Tab Content Three Heading</h1>
-        <p>Tab Content Three Paragraph</p>
-    `,
+    title: "Accordion Three",
+    content: `<h2>I am accordion three heading</h2> <p>I am accordion three para</p>`,
   },
-
-  // We can add more tabs here
 ];
 
-let selectedTabId = tabConfig[0].id;
-const tabContainer = document.querySelector(".tab-container");
-const tabHead = document.querySelector(".tab-head");
-const tabBody = document.querySelector(".tab-body");
+const accordionContainer = document.querySelector(".accordion-container");
+accordionConfig.forEach((item) => {
+  const accordionItem = document.createElement("div");
+  accordionItem.classList.add("accordion-item");
+  accordionItem.setAttribute("data-id", item.id);
+  accordionItem.setAttribute("aria-expanded", "false");
 
-tabConfig.forEach((tab) => {
-  const tabButton = document.createElement("button");
-  tabButton.innerText = tab.title;
-  tabButton.className = "tab-button";
-  tabButton.setAttribute("data-tab-id", tab.id);
-  tabHead.appendChild(tabButton);
+  const accordionButton = document.createElement("button");
+  accordionButton.classList.add("accordion-button");
+  accordionButton.textContent = item.title;
+  accordionItem.appendChild(accordionButton);
 
-  const tabContent = document.createElement("div");
-  tabContent.innerHTML = tab.content;
-  tabContent.className = "tab-content";
-  tabContent.setAttribute("data-tab-id", tab.id);
-  tabBody.appendChild(tabContent);
+  const accordionContent = document.createElement("div");
+  accordionContent.classList.add("accordion-content");
+  accordionContent.innerHTML = item.content;
+  accordionItem.append(accordionContent);
+
+  accordionContainer.appendChild(accordionItem);
 });
 
-tabContainer.addEventListener("click", function (event) {
-  if (event.target.className === "tab-button") {
-    selectedTabId = event.target.getAttribute("data-tab-id");
-    activeTab(selectedTabId);
+let selectedId = String(accordionConfig[0].id);
+openAccordion(selectedId);
+
+accordionContainer.addEventListener("click", function (e) {
+  if (e.target.nodeName === "BUTTON") {
+    selectedId = e.target.parentNode.getAttribute("data-id");
+    openAccordion(selectedId);
   }
 });
 
-function activeTab(id) {
-  const tabButtons = document.querySelectorAll(".tab-button");
-  tabButtons.forEach((button) => {
-    if (button.getAttribute("data-tab-id") === id) {
-      button.classList.add("active-button");
-    } else {
-      button.classList.remove("active-button");
-    }
-  });
+function openAccordion(id) {
+  const accordionItems = document.querySelectorAll(".accordion-item");
 
-  const tabContents = document.querySelectorAll(".tab-content");
-  tabContents.forEach((content) => {
-    if (content.getAttribute("data-tab-id") === id) {
-      content.classList.add("active-tab");
+  accordionItems.forEach((item) => {
+    const accordionContent = item.querySelector(".accordion-content");
+    if (item.getAttribute("data-id") === id) {
+      if (item.getAttribute("aria-expanded") === "true") {
+        item.setAttribute("aria-expanded", "false");
+        accordionContent.style.display = "none";
+      } else {
+        item.setAttribute("aria-expanded", "true");
+        accordionContent.style.display = "block";
+      }
     } else {
-      content.classList.remove("active-tab");
+      item.setAttribute("aria-expanded", "false");
+      accordionContent.style.display = "none";
     }
   });
 }
-
-activeTab(String(selectedTabId));
