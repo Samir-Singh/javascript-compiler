@@ -1,69 +1,53 @@
-const accordionConfig = [
-  {
-    id: 1,
-    title: "Accordion One",
-    content: `<h2>I am accordion one heading</h2> <p>I am accordion one para</p>`,
-  },
+const inputBox = document.querySelector(".input-box");
+const submitBtn = document.querySelector(".submit-btn");
+const todoContainer = document.querySelector(".todo-container");
+const todoForm = document.querySelector(".todo-form");
+let selectedItem = null;
 
-  {
-    id: 2,
-    title: "Accordion Two",
-    content: `<h2>I am accordion two heading</h2> <p>I am accordion two para</p>`,
-  },
+todoForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  if (inputBox.value.trim() === "") {
+    alert("Please enter something");
+    return;
+  }
 
-  {
-    id: 3,
-    title: "Accordion Three",
-    content: `<h2>I am accordion three heading</h2> <p>I am accordion three para</p>`,
-  },
-];
+  if (submitBtn.innerText === "Add Todo") {
+    addTodo(inputBox.value);
+  } else {
+    selectedItem.firstChild.innerText = inputBox.value;
+    submitBtn.innerText = "Add Todo";
+  }
 
-const accordionContainer = document.querySelector(".accordion-container");
-accordionConfig.forEach((item) => {
-  const accordionItem = document.createElement("div");
-  accordionItem.classList.add("accordion-item");
-  accordionItem.setAttribute("data-id", item.id);
-  accordionItem.setAttribute("aria-expanded", "false");
-
-  const accordionButton = document.createElement("button");
-  accordionButton.classList.add("accordion-button");
-  accordionButton.textContent = item.title;
-  accordionItem.appendChild(accordionButton);
-
-  const accordionContent = document.createElement("div");
-  accordionContent.classList.add("accordion-content");
-  accordionContent.innerHTML = item.content;
-  accordionItem.append(accordionContent);
-
-  accordionContainer.appendChild(accordionItem);
+  inputBox.value = "";
 });
 
-let selectedId = String(accordionConfig[0].id);
-openAccordion(selectedId);
-
-accordionContainer.addEventListener("click", function (e) {
+todoContainer.addEventListener("click", function (e) {
   if (e.target.nodeName === "BUTTON") {
-    selectedId = e.target.parentNode.getAttribute("data-id");
-    openAccordion(selectedId);
+    if (e.target.innerText === "❌") {
+      // remove item
+      e.target.parentNode.remove();
+    } else {
+      // edit item
+      selectedItem = e.target.parentNode;
+      inputBox.focus();
+      inputBox.value = e.target.parentNode.firstChild.innerText;
+      submitBtn.innerText = "Edit Todo";
+    }
   }
 });
 
-function openAccordion(id) {
-  const accordionItems = document.querySelectorAll(".accordion-item");
+function addTodo(value) {
+  const todoItem = document.createElement("li");
+  todoItem.innerHTML = `<span>${value}</span>`;
 
-  accordionItems.forEach((item) => {
-    const accordionContent = item.querySelector(".accordion-content");
-    if (item.getAttribute("data-id") === id) {
-      if (item.getAttribute("aria-expanded") === "true") {
-        item.setAttribute("aria-expanded", "false");
-        accordionContent.style.display = "none";
-      } else {
-        item.setAttribute("aria-expanded", "true");
-        accordionContent.style.display = "block";
-      }
-    } else {
-      item.setAttribute("aria-expanded", "false");
-      accordionContent.style.display = "none";
-    }
-  });
+  const editBtn = document.createElement("button");
+  editBtn.innerText = "✏️";
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.innerText = "❌";
+
+  todoItem.appendChild(editBtn);
+  todoItem.appendChild(deleteBtn);
+
+  todoContainer.appendChild(todoItem);
 }

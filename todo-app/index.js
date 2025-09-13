@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const todoForm = document.querySelector(".todo-form");
   const inputBox = document.querySelector(".input-box");
   const submitBtn = document.querySelector(".submit-btn");
-  const todoList = this.documentElement.querySelector(".todo-list");
+  const todoList = document.querySelector(".todo-list");
 
   let selectedItem = null;
 

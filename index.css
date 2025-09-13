@@ -9,29 +9,3 @@
 body {
   padding: 20px;
 }
-
-h1 {
-  text-align: center;
-}
-
-.accordion-item {
-  border-radius: 8px;
-  overflow: hidden;
-  margin-top: 10px;
-  border: 1px solid bisque;
-}
-
-.accordion-button {
-  width: 100%;
-  padding: 10px 20px;
-  background-color: bisque;
-  outline: none;
-  border: 1px solid bisque;
-  cursor: pointer;
-  text-align: start;
-  font-size: 18px;
-}
-
-.accordion-content {
-  padding: 20px;
-}
