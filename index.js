@@ -1,53 +1,70 @@
-const inputBox = document.querySelector(".input-box");
-const submitBtn = document.querySelector(".submit-btn");
-const todoContainer = document.querySelector(".todo-container");
-const todoForm = document.querySelector(".todo-form");
-let selectedItem = null;
+const tabConfig = [
+  {
+    id: 1,
+    title: "Tab 1",
+    content: "<h1>Tab One Heading</h1> <p>Tab one paragraph</p>",
+  },
+  {
+    id: 2,
+    title: "Tab 2",
+    content: "<h1>Tab Two Heading</h1> <p>Tab two paragraph</p>",
+  },
+  {
+    id: 3,
+    title: "Tab 3",
+    content: "<h1>Tab Three Heading</h1> <p>Tab three paragraph</p>",
+  },
+];
 
-todoForm.addEventListener("submit", function (e) {
-  e.preventDefault();
-  if (inputBox.value.trim() === "") {
-    alert("Please enter something");
-    return;
-  }
+const tabContainer = document.querySelector(".tab-container");
+const tabHead = document.querySelector(".tab-head");
+const tabBody = document.querySelector(".tab-body");
 
-  if (submitBtn.innerText === "Add Todo") {
-    addTodo(inputBox.value);
-  } else {
-    selectedItem.firstChild.innerText = inputBox.value;
-    submitBtn.innerText = "Add Todo";
-  }
+let activeId = String(tabConfig[0].id);
 
-  inputBox.value = "";
+tabConfig.forEach((item) => {
+  const tabButton = document.createElement("button");
+  tabButton.innerText = item.title;
+  tabButton.setAttribute("data-id", item.id);
+  tabButton.classList.add("tab-button");
+
+  tabHead.appendChild(tabButton);
+
+  const tabContent = document.createElement("div");
+  tabContent.setAttribute("data-id", item.id);
+  tabContent.classList.add("tab-content");
+  tabContent.innerHTML = item.content;
+
+  tabBody.append(tabContent);
 });
 
-todoContainer.addEventListener("click", function (e) {
+activeTab(activeId);
+
+tabContainer.addEventListener("click", function (e) {
   if (e.target.nodeName === "BUTTON") {
-    if (e.target.innerText === "❌") {
-      // remove item
-      e.target.parentNode.remove();
-    } else {
-      // edit item
-      selectedItem = e.target.parentNode;
-      inputBox.focus();
-      inputBox.value = e.target.parentNode.firstChild.innerText;
-      submitBtn.innerText = "Edit Todo";
-    }
+    activeId = e.target.getAttribute("data-id");
+    activeTab(activeId);
   }
 });
 
-function addTodo(value) {
-  const todoItem = document.createElement("li");
-  todoItem.innerHTML = `<span>${value}</span>`;
+function activeTab(id) {
+  const tabButtons = document.querySelectorAll(".tab-button");
+  tabButtons.forEach((item) => {
+    if (item.getAttribute("data-id") === id) {
+      //button active
+      item.classList.add("active-button");
+    } else {
+      // button not active
+      item.classList.remove("active-button");
+    }
+  });
 
-  const editBtn = document.createElement("button");
-  editBtn.innerText = "✏️";
-
-  const deleteBtn = document.createElement("button");
-  deleteBtn.innerText = "❌";
-
-  todoItem.appendChild(editBtn);
-  todoItem.appendChild(deleteBtn);
-
-  todoContainer.appendChild(todoItem);
+  const tabContents = document.querySelectorAll(".tab-content");
+  tabContents.forEach((item) => {
+    if (item.getAttribute("data-id") === id) {
+      item.style.display = "block";
+    } else {
+      item.style.display = "none";
+    }
+  });
 }
