@@ -9,15 +9,3 @@
 body {
   padding: 20px;
 }
-
-.tab-button {
-  outline: none;
-  border: transparent;
-  padding: 5px 10px;
-  border-radius: 4px;
-}
-
-.active-button {
-  background-color: black;
-  color: white;
-}
