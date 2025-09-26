@@ -9,3 +9,8 @@
 body {
   padding: 20px;
 }
+
+.all-todo {
+  list-style: none;
+  margin-top: 20px;
+}

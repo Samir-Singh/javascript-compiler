@@ -7,53 +7,12 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <h1>Debouncing</h1>
-    <button class="debounce-btn">Debounce</button>
+    <form class="todo-form">
+      <input class="todo-input" /><button class="todo-btn">Submit</button>
+    </form>
 
-    <h1>Throttling</h1>
-    <button class="throttle-btn">Throttle</button>
+    <ul class="all-todo"></ul>
 
-    <script>
-      function apiCalling() {
-        console.log("Api Called");
-      }
-
-      function myDebounce(cb, d) {
-        let timer;
-        return function (...args) {
-          let context = this;
-          if (timer) clearTimeout(timer);
-          timer = setTimeout(() => {
-            cb.apply(context, args);
-          }, d);
-        };
-      }
-
-      function myThrottle(cb, d) {
-        let flag = true;
-        return function (...args) {
-          if (flag) {
-            flag = false;
-            cb.apply(this, args);
-            setTimeout(() => {
-              flag = true;
-            }, d);
-          }
-        };
-      }
-
-      const debouncedFunction = myDebounce(apiCalling, 500);
-      const throttleFunction = myThrottle(apiCalling, 1000);
-
-      const debounceBtn = document.querySelector(".debounce-btn");
-      debounceBtn.addEventListener("click", function () {
-        debouncedFunction();
-      });
-
-      const throttleBtn = document.querySelector(".throttle-btn");
-      throttleBtn.addEventListener("click", function () {
-        throttleFunction();
-      });
-    </script>
+    <script src="index.js"></script>
   </body>
 </html>
