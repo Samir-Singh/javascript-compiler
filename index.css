@@ -10,7 +10,20 @@ body {
   padding: 20px;
 }
 
-.all-todo {
-  list-style: none;
-  margin-top: 20px;
+.tab-btn {
+  padding: 5px 10px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.tab-btn-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.active-btn {
+  background-color: black;
+  color: white;
 }
