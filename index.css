@@ -27,3 +27,7 @@ body {
   background-color: black;
   color: white;
 }
+
+.tab-body {
+  padding: 10px 5px;
+}
