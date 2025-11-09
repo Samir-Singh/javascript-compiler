@@ -1,18 +1,54 @@
-// callback revision
+const todoForm = document.querySelector(".todo-form");
+const inputBox = document.querySelector(".input-box");
+const submitBtn = document.querySelector(".submit-btn");
+const todoList = document.querySelector(".todo-list");
 
-/*
-callback is divided into two parts good part of callback and bad part of callback
-1. good part of callback is callback is used to write asynchronous code.
-2. bad part of callback is inversion of control( means you lose the control of the code you have to dependent on the another function to call your
-callback function)
-*/
+inputBox.focus();
+let selectedNode = null;
 
-const cart = ["shoes", "shirts", "pants"];
+todoForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+  if (inputBox.value.trim() === "") {
+    alert("Please enter something");
+    return;
+  }
 
-api.createOrder(cart, function () {
-  api.paymentInitiated(function () {
-    api.showOrderSummary(function () {
-      api.updateWallet();
-    });
-  });
+  if (submitBtn.innerText === "Add Todo") {
+    addTodo(inputBox.value);
+  } else {
+    selectedNode.innerText = inputBox.value;
+    selectedNode = null;
+    submitBtn.innerText = "Add Todo";
+  }
+
+  inputBox.value = "";
 });
+
+todoList.addEventListener("click", function (event) {
+  if (event.target.nodeName === "BUTTON") {
+    if (event.target.innerText === "❌") {
+      event.target.parentNode.remove();
+    } else {
+      selectedNode = event.target.parentNode.firstChild;
+      inputBox.value = event.target.parentNode.firstChild.innerText;
+      submitBtn.innerText = "Edit Todo";
+      inputBox.focus();
+    }
+  }
+});
+
+function addTodo(value) {
+  const todoItem = document.createElement("li");
+  todoItem.innerHTML = `<span>${value}</span>`;
+
+  const removeBtn = document.createElement("button");
+  removeBtn.innerText = "❌";
+
+  const editBtn = document.createElement("button");
+  editBtn.innerText = "✏️";
+
+  todoItem.appendChild(removeBtn);
+  todoItem.appendChild(editBtn);
+
+  todoList.appendChild(todoItem);
+}
