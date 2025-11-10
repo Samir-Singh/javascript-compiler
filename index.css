@@ -10,24 +10,20 @@ body {
   padding: 20px;
 }
 
-.tab-btn {
-  padding: 5px 10px;
-  outline: none;
-  border: none;
-  cursor: pointer;
-}
-
-.tab-btn-container {
+.accordion-container {
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.active-btn {
-  background-color: black;
-  color: white;
-}
-
-.tab-body {
-  padding: 10px 5px;
+.accordion-btn {
+  width: 100%;
+  outline: none;
+  background-color: beige;
+  border: 1px solid beige;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding: 12px 8px;
 }
