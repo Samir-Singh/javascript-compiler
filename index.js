@@ -1,26 +1,53 @@
-async function batchRequests(apiCalls, chunkSize = 5) {
-  let results = [];
+function myPromise(executor) {
+  let onResolve, onReject;
 
-  for (let i = 0; i < apiCalls.length; i += chunkSize) {
-    const chunk = apiCalls.slice(i, i + chunkSize);
+  this.myThen = function (cb) {
+    if (typeof cb === "function") {
+      cb(onResolve);
+    }
+  };
 
-    const response = await Promise.all(
-      chunk.map((fn) => fn().catch((err) => err))
-    );
+  this.myCatch = function (cb) {
+    if (typeof cb === "function") {
+      cb(onReject);
+    }
+  };
 
-    results.push(...response);
+  function myResolve(data) {
+    onResolve = data;
+    return this;
   }
 
-  return results;
+  function myReject(error) {
+    onReject = error;
+    return this;
+  }
+
+  executor(myResolve, myReject);
 }
 
-// Example: 100 dummy API functions
-const apiCalls = Array.from({ length: 100 }, (_, i) => {
-  return () =>
-    fetch(`https://dummyjson.com/products/${i + 1}`).then((res) => res.json());
+const ans = new myPromise((myResolve, myReject) => {
+  console.log("My Promise is running");
+  if (true) {
+    myResolve("My Promise is resolved");
+  } else {
+    myReject("My Promise is rejected");
+  }
 });
 
-batchRequests(apiCalls, 5).then((finalResult) => {
-  console.log("All API Calls Done");
-  console.log(finalResult);
+ans.myThen((data) => {
+  console.log(data);
+});
+
+const promise = new Promise((resolve, reject) => {
+  console.log("Promise is running");
+  if (true) {
+    resolve("Promise is resolved");
+  } else {
+    reject("Promise is rejected");
+  }
+});
+
+promise.then((data) => {
+  console.log(data);
 });
