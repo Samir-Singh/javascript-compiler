@@ -1,53 +1,102 @@
-function myPromise(executor) {
-  let onResolve, onReject;
-
-  this.myThen = function (cb) {
-    if (typeof cb === "function") {
-      cb(onResolve);
-    }
-  };
-
-  this.myCatch = function (cb) {
-    if (typeof cb === "function") {
-      cb(onReject);
-    }
-  };
-
-  function myResolve(data) {
-    onResolve = data;
-    return this;
-  }
-
-  function myReject(error) {
-    onReject = error;
-    return this;
-  }
-
-  executor(myResolve, myReject);
+function register(status, time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (status) {
+        resolve("registered");
+      } else {
+        reject("registration failed");
+      }
+    }, time);
+  });
 }
 
-const ans = new myPromise((myResolve, myReject) => {
-  console.log("My Promise is running");
-  if (true) {
-    myResolve("My Promise is resolved");
-  } else {
-    myReject("My Promise is rejected");
-  }
-});
+function getOtp(status, time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (status) {
+        resolve("12345");
+      } else {
+        reject("get otp failed");
+      }
+    }, time);
+  });
+}
 
-ans.myThen((data) => {
-  console.log(data);
-});
+function verifyOtp(status, time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (status) {
+        resolve("otp verified");
+      } else {
+        reject("otp verification failed");
+      }
+    }, time);
+  });
+}
 
-const promise = new Promise((resolve, reject) => {
-  console.log("Promise is running");
-  if (true) {
-    resolve("Promise is resolved");
-  } else {
-    reject("Promise is rejected");
-  }
-});
+function login(status, time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (status) {
+        resolve("logged in");
+      } else {
+        reject("login failed");
+      }
+    }, time);
+  });
+}
 
-promise.then((data) => {
-  console.log(data);
-});
+Promise.myAll = function (promises) {
+  return new Promise((resolve, reject) => {
+    if (!Array.isArray(promises)) {
+      return reject("Input must be an array");
+    }
+
+    let results = [];
+    count = 0;
+
+    promises.forEach((item, idx) => {
+      Promise.resolve(item)
+        .then((res) => {
+          results[idx] = res;
+          count++;
+          if (count === promises.length) {
+            resolve(results);
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  });
+};
+
+const ans = Promise.all([
+  register(true, 1000),
+  getOtp(true, 500),
+  verifyOtp(true, 1000),
+  login(true, 1000),
+]);
+
+ans
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+const ans2 = Promise.myAll([
+  register(true, 1000),
+  getOtp(true, 500),
+  verifyOtp(true, 1000),
+  login(true, 1000),
+]);
+
+ans2
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
