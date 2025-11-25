@@ -1,102 +1,51 @@
-function register(status, time) {
+async function asyncFunction(status, d, promiseNumber) {
+  console.log(`Promise number ${promiseNumber} is running`);
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (status) {
-        resolve("registered");
+        resolve("Promise resolved");
       } else {
-        reject("registration failed");
+        reject("Promise rejected");
       }
-    }, time);
+    }, d);
   });
 }
 
-function getOtp(status, time) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (status) {
-        resolve("12345");
-      } else {
-        reject("get otp failed");
-      }
-    }, time);
-  });
-}
+async function batchPromise(promiseArray = [], chunkSize = 2) {
+  let result = [];
 
-function verifyOtp(status, time) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (status) {
-        resolve("otp verified");
-      } else {
-        reject("otp verification failed");
-      }
-    }, time);
-  });
-}
+  for (let i = 0; i < promiseArray.length; i += chunkSize) {
+    let chunk = promiseArray.slice(i, i + chunkSize);
+    let res = await Promise.allSettled(chunk.map((fn) => fn()));
 
-function login(status, time) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (status) {
-        resolve("logged in");
-      } else {
-        reject("login failed");
-      }
-    }, time);
-  });
-}
-
-Promise.myAll = function (promises) {
-  return new Promise((resolve, reject) => {
-    if (!Array.isArray(promises)) {
-      return reject("Input must be an array");
-    }
-
-    let results = [];
-    count = 0;
-
-    promises.forEach((item, idx) => {
-      Promise.resolve(item)
-        .then((res) => {
-          results[idx] = res;
-          count++;
-          if (count === promises.length) {
-            resolve(results);
-          }
-        })
-        .catch((err) => {
-          reject(err);
+    res.forEach((item) => {
+      if (item.status === "fulfilled") {
+        result.push({
+          status: "fulfilled",
+          value: item.value,
         });
+      } else {
+        result.push({
+          status: "rejected",
+          reason: item.reason,
+        });
+      }
     });
-  });
-};
+  }
 
-const ans = Promise.all([
-  register(true, 1000),
-  getOtp(true, 500),
-  verifyOtp(true, 1000),
-  login(true, 1000),
-]);
+  return result;
+}
 
-ans
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+const promiseArray = [
+  () => asyncFunction(true, 1000, 1),
+  () => asyncFunction(false, 500, 2),
+  () => asyncFunction(true, 2000, 3),
+  () => asyncFunction(true, 1500, 4),
+  () => asyncFunction(false, 100, 5),
+];
 
-const ans2 = Promise.myAll([
-  register(true, 1000),
-  getOtp(true, 500),
-  verifyOtp(true, 1000),
-  login(true, 1000),
-]);
+const ans = batchPromise(promiseArray, 3);
 
-ans2
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+ans.then((res) => {
+  console.log(res);
+});
